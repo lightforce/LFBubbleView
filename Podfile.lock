@@ -1,0 +1,10 @@
+PODS:
+  - NHAlignmentFlowLayout (0.1.0)
+
+DEPENDENCIES:
+  - NHAlignmentFlowLayout
+
+SPEC CHECKSUMS:
+  NHAlignmentFlowLayout: 384eea60ab21f6915d9ae19930f3a7766aded899
+
+COCOAPODS: 0.32.1
