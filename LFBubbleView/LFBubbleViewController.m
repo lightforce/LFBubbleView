@@ -4,7 +4,7 @@
 
 #import "LFBubbleViewController.h"
 
-#define ITEM_PADDING 10
+#define ITEM_PADDING 5
 #define ITEM_HEIGHT 25
 #define ITEM_TEXT_PADDING 15
 
@@ -23,7 +23,6 @@
     _bubbleItemsFont = [UIFont fontWithName:@"Avenir-Light" size:13.0];
     [_bubbleView registerClass:[LFBubbleViewCell class] forCellWithReuseIdentifier:@"BubbleCell"];
     _bubbleTexts = [[NSMutableArray alloc] init];
-    _bubbleView.selectionStyle = HEBubbleViewSelectionStyleDefault;
     
     UIBarButtonItem *addItemButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItemToEndOfList)];
     self.navigationItem.leftBarButtonItem = addItemButton;
@@ -72,14 +71,12 @@
 
 #pragma mark -
 
--(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    LFBubbleViewCell* cell = (LFBubbleViewCell*) [collectionView cellForItemAtIndexPath:indexPath];
-}
-
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-     LFBubbleViewCell* cell = (LFBubbleViewCell*) [collectionView cellForItemAtIndexPath:indexPath];
+    LFBubbleViewCell* cell = (LFBubbleViewCell*) [collectionView cellForItemAtIndexPath:indexPath];
+    BOOL highlighted = !cell.isHighlighted;
+    [cell setHighlighted:highlighted animated:YES];
+    if(highlighted) [self.bubbleView showMenuForBubbleItem:cell];
 }
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
@@ -118,7 +115,6 @@
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     LFBubbleViewCell *item = [_bubbleView dequeueReusableCellWithReuseIdentifier:@"BubbleCell" forIndexPath:indexPath];
-    item.delegate = self.bubbleView;
     item.textLabel.font = _bubbleItemsFont;
     item.selectedBGColor = [UIColor colorWithRed:92/255.0 green:193/255.0 blue:0 alpha:1];
     item.unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
@@ -126,12 +122,10 @@
     item.unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     item.selectedBorderColor = item.selectedBGColor;
     item.unselectedBorderColor = item.unselectedBGColor;
-    item.highlightTouches = NO;
-    item.bubbleTextLabelPadding = ITEM_TEXT_PADDING;
+    item.textLabelPadding = ITEM_TEXT_PADDING;
     
      //We neet to call setSelected to initialize the bubble style
-    [item setSelected:item.isSelected animated:NO];
-    item.highlightTouches = self.bubbleView.selectionStyle != HEBubbleViewSelectionStyleNone;
+    [item setHighlighted:item.isHighlighted animated:NO];
     
     item.textLabel.text = _bubbleTexts[indexPath.row];
     return item;
@@ -142,7 +136,6 @@
 }
 
 
-#pragma mark - LFBubbleViewDelegate
 
 -(void)bubbleView:(LFBubbleCollectionView *)aBubbleView didSelectBubbleItemAtIndex:(NSInteger)index
 {
@@ -164,6 +157,8 @@
     NSLog(@"Asking %@ if it can become first responder",[self class]);
     return YES;
 }
+
+#pragma mark - LFBubbleViewDelegate
 
 /*
  Create the menu items you want to show in the callout and return them. Provide selectors

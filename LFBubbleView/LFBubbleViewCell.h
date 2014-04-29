@@ -6,32 +6,20 @@
 
 @class LFBubbleViewCell;
 
-@protocol HEBubbleViewItemDelegate <NSObject>
-
--(void)selectedBubbleItem:(LFBubbleViewCell *)item; 
--(void)deselectedBubbleItem:(LFBubbleViewCell *)item;
--(BOOL)shouldHighlight:(LFBubbleViewCell *)item;
-
-@end
-
 @interface LFBubbleViewCell : UICollectionViewCell
 
-@property (nonatomic, weak) id<HEBubbleViewItemDelegate> delegate;
 @property (nonatomic, readonly) UILabel *textLabel;
-@property (nonatomic, assign) BOOL highlightTouches;
 
 @property (nonatomic, strong) UIColor *unselectedBGColor;
 @property (nonatomic, strong) UIColor *selectedBGColor;
-
 @property (nonatomic, strong) UIColor *unselectedBorderColor;
 @property (nonatomic, strong) UIColor *selectedBorderColor;
-
 @property (nonatomic, strong) UIColor *unselectedTextColor;
 @property (nonatomic, strong) UIColor *selectedTextColor;
 
-@property (nonatomic, readonly) BOOL isSelected;
-@property (nonatomic, assign) CGFloat bubbleTextLabelPadding;
+@property (nonatomic, assign) CGFloat textLabelPadding;
+@property (nonatomic, readonly) BOOL isHighlighted;
 
--(void)setSelected:(BOOL)selected animated:(BOOL)animated;
+-(void)setHighlighted:(BOOL)selected animated:(BOOL)animated;
 
 @end
