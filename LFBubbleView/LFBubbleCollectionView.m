@@ -25,9 +25,9 @@
 {
     self.flowLayout = [[NHAlignmentFlowLayout alloc] init];
     self.flowLayout.alignment = NHAlignmentTopLeftAligned;
-    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    [self.flowLayout setItemSize:CGSizeMake(100.0, 25.0)];
-    [self setCollectionViewLayout:self.flowLayout];
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    self.flowLayout.itemSize = CGSizeMake(100.0, 25.0);
+    self.collectionViewLayout = self.flowLayout;
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -44,26 +44,27 @@
     return  self;
 }
 
+#pragma mark - Menu Actions
+
 -(void)showMenuForBubbleItem:(LFBubbleViewCell *)item
 {
     if (item == _activeBubble) return;
     
     NSArray *menuItems = nil;
     
-    if ([_bubbleDelegate respondsToSelector:@selector(bubbleView:menuItemsForBubbleItemAtIndex:)])
-        menuItems = [_bubbleDelegate bubbleView:self menuItemsForBubbleItemAtIndex:[self indexPathForCell:item].row];
+    if ([_bubbleViewDelegate respondsToSelector:@selector(bubbleView:menuItemsForBubbleItemAtIndex:)])
+        menuItems = [_bubbleViewDelegate bubbleView:self menuItemsForBubbleItemAtIndex:[self indexPathForCell:item].row];
     
     if (menuItems)
         [self showMenuCalloutWthItems:menuItems forBubbleItem:item];
 }
 
-#pragma mark - Menu Actions
 
 -(BOOL)canBecomeFirstResponder
 {
     return YES;
 }
- 
+
 -(void)willShowMenuController
 {
     self.userInteractionEnabled = NO;
@@ -76,8 +77,8 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if ([_bubbleDelegate respondsToSelector:@selector(bubbleView:didHideMenuForBubbleItemAtIndex:)])
-        [_bubbleDelegate bubbleView:self didHideMenuForBubbleItemAtIndex:[self indexPathForCell:_activeBubble].row];
+    if ([_bubbleViewDelegate respondsToSelector:@selector(bubbleView:didHideMenuForBubbleItemAtIndex:)])
+        [_bubbleViewDelegate bubbleView:self didHideMenuForBubbleItemAtIndex:[self indexPathForCell:_activeBubble].row];
     
     _activeBubble = nil;
 }
@@ -90,7 +91,7 @@
     _menuController = [UIMenuController sharedMenuController];
     _menuController.menuItems = nil;
     _menuController.menuItems = menuItems;
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willShowMenuController) name:UIMenuControllerWillShowMenuNotification object:_menuController];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didHideMenuController) name:UIMenuControllerDidHideMenuNotification object:_menuController];
     

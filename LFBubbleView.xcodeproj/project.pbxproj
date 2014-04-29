@@ -24,6 +24,7 @@
 		F38B310F190FEACA00DA1A7B /* LFBubbleCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310A190FEACA00DA1A7B /* LFBubbleCollectionView.m */; };
 		F38B3110190FEACA00DA1A7B /* LFBubbleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310C190FEACA00DA1A7B /* LFBubbleViewCell.m */; };
 		F38B3111190FEACA00DA1A7B /* LFBubbleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310E190FEACA00DA1A7B /* LFBubbleViewController.m */; };
+		F38B31141910470300DA1A7B /* MyBubbleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B31131910470300DA1A7B /* MyBubbleViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,8 @@
 		F38B310C190FEACA00DA1A7B /* LFBubbleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleViewCell.m; sourceTree = "<group>"; };
 		F38B310D190FEACA00DA1A7B /* LFBubbleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFBubbleViewController.h; sourceTree = "<group>"; };
 		F38B310E190FEACA00DA1A7B /* LFBubbleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleViewController.m; sourceTree = "<group>"; };
+		F38B31121910470300DA1A7B /* MyBubbleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBubbleViewController.h; sourceTree = "<group>"; };
+		F38B31131910470300DA1A7B /* MyBubbleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBubbleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +138,8 @@
 				F38B30E6190FEA6D00DA1A7B /* Main.storyboard */,
 				F38B30EC190FEA6D00DA1A7B /* Images.xcassets */,
 				F38B30DB190FEA6D00DA1A7B /* Supporting Files */,
+				F38B31121910470300DA1A7B /* MyBubbleViewController.h */,
+				F38B31131910470300DA1A7B /* MyBubbleViewController.m */,
 			);
 			path = LFBubbleView;
 			sourceTree = "<group>";
@@ -301,6 +306,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F38B31141910470300DA1A7B /* MyBubbleViewController.m in Sources */,
 				F38B3111190FEACA00DA1A7B /* LFBubbleViewController.m in Sources */,
 				F38B30E5190FEA6D00DA1A7B /* LFAppDelegate.m in Sources */,
 				F38B310F190FEACA00DA1A7B /* LFBubbleCollectionView.m in Sources */,

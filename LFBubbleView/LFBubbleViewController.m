@@ -3,179 +3,146 @@
 //
 
 #import "LFBubbleViewController.h"
+#import "LFBubbleViewCell.h"
 
-#define ITEM_PADDING 5
-#define ITEM_HEIGHT 25
-#define ITEM_TEXT_PADDING 15
+#define DEFAULT_ITEM_PADDING 5
+#define DEFAULT_ITEM_HEIGHT 25
+#define DEFAULT_ITEM_TEXT_PADDING 15
+#define DEFAULT_FONT [UIFont fontWithName:@"Avenir-Light" size:13.0]
+
+#define REUSE_CELL_IDENTIFIER @"BubbleCell"
 
 @implementation LFBubbleViewController
-{
-    NSMutableArray *_bubbleTexts;
-    UIFont* _bubbleItemsFont;
-}
 
-#pragma mark - View Lifecycle
-
-- (void)viewDidLoad
+-(void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.bubbleView registerClass:[LFBubbleViewCell class] forCellWithReuseIdentifier:REUSE_CELL_IDENTIFIER];
+}
+
+-(BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+#pragma mark - UICollectionViewDelegate
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    LFBubbleCollectionView * bubbleView = (LFBubbleCollectionView *)collectionView;
+    LFBubbleViewCell *item = [bubbleView dequeueReusableCellWithReuseIdentifier:REUSE_CELL_IDENTIFIER forIndexPath:indexPath];
+    [self configureItem:item forBubbleView:bubbleView atIndex:indexPath.row];
     
-    _bubbleItemsFont = [UIFont fontWithName:@"Avenir-Light" size:13.0];
-    [_bubbleView registerClass:[LFBubbleViewCell class] forCellWithReuseIdentifier:@"BubbleCell"];
-    _bubbleTexts = [[NSMutableArray alloc] init];
-    
-    UIBarButtonItem *addItemButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItemToEndOfList)];
-    self.navigationItem.leftBarButtonItem = addItemButton;
-}
-
-#pragma mark - Delete / Insert Items
-
--(void)addItemToEndOfList
-{
-    NSInteger index = [_bubbleTexts count];
-    NSString* label = index % 2 == 0 ? [NSString stringWithFormat:@"Another item %i", index + 1 ] : [NSString stringWithFormat:@"Item %i", index + 1];
-
-    // ALWAYS: first add data to your data source, then call addItem on the bubble view
-    [_bubbleTexts insertObject:label atIndex:index];
-    [_bubbleView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-}
-
--(void)deleteSelectedBubble:(id)sender
-{
-    NSIndexPath* selectedBubbleIndexPath = [_bubbleView indexPathForCell:_bubbleView.activeBubble];
-    [_bubbleTexts removeObjectAtIndex:selectedBubbleIndexPath.row];
-    [_bubbleView deleteItemsAtIndexPaths:@[selectedBubbleIndexPath]];
-}
-
--(void)inserLeft:(id)sender
-{
-    NSIndexPath* selectedBubbleIndexPath = [_bubbleView indexPathForCell:_bubbleView.activeBubble];
-    [_bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", _bubbleTexts.count + 1 ] atIndex:selectedBubbleIndexPath.row];
-    [_bubbleView insertItemsAtIndexPaths:@[selectedBubbleIndexPath]];
-}
-
--(void)insertRight:(id)sender
-{
-    NSIndexPath* selectedBubbleIndexPath = [_bubbleView indexPathForCell:_bubbleView.activeBubble];
-    NSInteger index = selectedBubbleIndexPath.row+1;    
-    [_bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", _bubbleTexts.count + 1 ] atIndex:index];
-    [_bubbleView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-}
-
-#pragma mark - HEBubbleViewDataSource
-
--(NSInteger)numberOfItemsInBubbleView:(LFBubbleCollectionView *)bubbleView
-{
-    return _bubbleTexts.count;
-}
-
-#pragma mark -
-
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    LFBubbleViewCell* cell = (LFBubbleViewCell*) [collectionView cellForItemAtIndexPath:indexPath];
-    BOOL highlighted = !cell.isHighlighted;
-    [cell setHighlighted:highlighted animated:YES];
-    if(highlighted) [self.bubbleView showMenuForBubbleItem:cell];
+    //We neet to call setSelected to initialize the bubble style
+    BOOL itemShouldBeHighlighted = [self bubbleView:bubbleView itemIsHighlightedAtIndex:indexPath.row];
+    [item setHighlighted:itemShouldBeHighlighted animated:NO];
+    return item;
 }
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    return ITEM_PADDING;
+    return [self itemPadding];
 }
-
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat itemHeight = ITEM_HEIGHT;
-    CGFloat itemPadding = ITEM_PADDING;
-    CGFloat itemTextPadding = ITEM_TEXT_PADDING;
-    NSString* bubbleLabelText = _bubbleTexts[indexPath.row];
+    LFBubbleCollectionView * bubbleCollectionView = (LFBubbleCollectionView *) collectionView;
+    CGFloat itemHeight = [self itemHeight];
+    CGFloat itemPadding = [self itemPadding];
+    CGFloat itemTextPadding = [self itemTextPadding];
+    NSString* bubbleLabelText = [self bubbleView:bubbleCollectionView textForItemAtIndex:indexPath.row];
+    UIFont* bubbleFont = [self bubbleView:bubbleCollectionView fontForItemAtIndex:indexPath.row];
     
-    CGFloat currentBubbleWidth = [bubbleLabelText sizeWithFont:_bubbleItemsFont constrainedToSize:CGSizeMake(CGFLOAT_MAX, itemHeight)].width+2*itemTextPadding;
+    CGFloat currentBubbleWidth = [bubbleLabelText sizeWithFont:bubbleFont constrainedToSize:CGSizeMake(CGFLOAT_MAX, itemHeight)].width+2*itemTextPadding;
     
-    BOOL currentBubbleWidthIsLargerThanFrameWidth = currentBubbleWidth >= self.bubbleView.frame.size.width-2 * itemPadding;
+    BOOL currentBubbleWidthIsLargerThanFrameWidth = currentBubbleWidth > self.bubbleView.frame.size.width-2 * itemPadding;
     if (currentBubbleWidthIsLargerThanFrameWidth) {
         // if bubble width is bigger than frame width cut it off...
         currentBubbleWidth = self.bubbleView.frame.size.width-2*itemPadding;
-    }    
+    }
     
     return CGSizeMake(currentBubbleWidth, itemHeight);
 }
 
-
--(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
--(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _bubbleTexts.count;
-}
-
--(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    LFBubbleViewCell *item = [_bubbleView dequeueReusableCellWithReuseIdentifier:@"BubbleCell" forIndexPath:indexPath];
-    item.textLabel.font = _bubbleItemsFont;
-    item.selectedBGColor = [UIColor colorWithRed:92/255.0 green:193/255.0 blue:0 alpha:1];
-    item.unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
-    item.selectedTextColor = [UIColor colorWithWhite:0.98 alpha:1.0];
-    item.unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    item.selectedBorderColor = item.selectedBGColor;
-    item.unselectedBorderColor = item.unselectedBGColor;
-    item.textLabelPadding = ITEM_TEXT_PADDING;
+    LFBubbleViewCell* cell = (LFBubbleViewCell*) [collectionView cellForItemAtIndexPath:indexPath];
+    LFBubbleCollectionView* bubbleCollectionView = (LFBubbleCollectionView*)collectionView;
     
-     //We neet to call setSelected to initialize the bubble style
-    [item setHighlighted:item.isHighlighted animated:NO];
+    BOOL highlighted = !cell.isHighlighted;
+    [cell setHighlighted:highlighted animated:YES];
     
-    item.textLabel.text = _bubbleTexts[indexPath.row];
-    return item;
+    if(highlighted && [self bubbleView:bubbleCollectionView shouldShowMenuForBubbleItemAtIndex:indexPath.row]){
+        [self.bubbleView showMenuForBubbleItem:cell];
+        return;
+    }
+    
+    if(highlighted) [self bubbleView:bubbleCollectionView didSelectBubbleItemAtIndex:indexPath.row];
+    else [self bubbleView:bubbleCollectionView didDeselectBubbleItemAtIndex:indexPath.row];
+}
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [self numberOfBubbleItemsInBubbleView:(LFBubbleCollectionView *)collectionView];
 }
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
+#pragma mark - Default implementation
 
+- (void)configureItem:(LFBubbleViewCell *)item forBubbleView:(LFBubbleCollectionView *)bubbleView atIndex:(NSInteger)index
+{
+    item.textLabel.font = [self bubbleView:bubbleView fontForItemAtIndex:index];
+    item.textLabel.text = [self bubbleView:bubbleView textForItemAtIndex:index];
+    item.textLabelPadding = self.itemTextPadding;
+}
+
+-(CGFloat)itemHeight
+{
+    return DEFAULT_ITEM_HEIGHT;
+}
+
+-(CGFloat)itemPadding
+{
+    return DEFAULT_ITEM_PADDING;
+}
+
+-(CGFloat)itemTextPadding
+{
+    return DEFAULT_ITEM_TEXT_PADDING;
+}
 
 -(void)bubbleView:(LFBubbleCollectionView *)aBubbleView didSelectBubbleItemAtIndex:(NSInteger)index
-{
-    NSLog(@"selected bubble at index %d", index);
-}
+{}
 
 -(void)bubbleView:(LFBubbleCollectionView *)bubbleView didDeselectBubbleItemAtIndex:(NSInteger)index
-{
-    NSLog(@"deselected bubble at index %d", index);
-}
+{}
 
 -(BOOL)bubbleView:(LFBubbleCollectionView *)bubbleView shouldShowMenuForBubbleItemAtIndex:(NSInteger)index
 {
     return NO;
 }
 
--(BOOL)canBecomeFirstResponder
+-(BOOL)bubbleView:(LFBubbleCollectionView *)bubbleView itemIsHighlightedAtIndex:(NSInteger)index
 {
-    NSLog(@"Asking %@ if it can become first responder",[self class]);
-    return YES;
+    return NO;
 }
 
-#pragma mark - LFBubbleViewDelegate
-
-/*
- Create the menu items you want to show in the callout and return them. Provide selectors
- that are implemented in your bubbleview delegate. override canBecomeFirstResponder and return
- YES, otherwise menu will not be shown
-*/
--(NSArray *)bubbleView:(LFBubbleCollectionView *)bubbleView menuItemsForBubbleItemAtIndex:(NSInteger)index
+-(NSString*)bubbleView:(LFBubbleCollectionView *)bubbleView textForItemAtIndex:(NSInteger)index
 {
-    UIMenuItem *item0 = [[UIMenuItem alloc] initWithTitle:@"Delete item" action:@selector(deleteSelectedBubble:)];
-    UIMenuItem *item1 = [[UIMenuItem alloc] initWithTitle:@"Insert Left" action:@selector(inserLeft:)];
-    UIMenuItem *item2 = [[UIMenuItem alloc] initWithTitle:@"Insert Right" action:@selector(insertRight:)];
-    return @[item1,item0,item2];
+    return nil;
 }
 
--(void)bubbleView:(LFBubbleCollectionView *)bubbleView didHideMenuForBubbleItemAtIndex:(NSInteger)index
+-(UIFont*)bubbleView:(LFBubbleCollectionView *)bubbleView fontForItemAtIndex:(NSInteger)index
 {
-    NSLog(@"Did hide menu for bubble at index %i",index);
+    return DEFAULT_FONT;
+}
+
+-(NSUInteger)numberOfBubbleItemsInBubbleView:(LFBubbleCollectionView *)bubbleView
+{
+    return 0;
 }
 
 @end

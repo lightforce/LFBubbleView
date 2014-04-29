@@ -6,13 +6,14 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define DEFAULT_BG_COLOR UIColorFromRGB(0,140,180,255)
-#define DEFAULT_SELECTED_BG_COLOR UIColorFromRGB(0,140,180,255)
+#define DEFAULT_SELECTED_BG_COLOR UIColorFromRGB(0,160,200,255)
 #define DEFAULT_TEXT_COLOR UIColorFromRGB(255,255,255,255)
 #define DEFAULT_SELECTED_TEXT_COLOR UIColorFromRGB(255,255,255,255)
 #define DEFAULT_BORDER_COLOR UIColorFromRGB(0,140,180,255)
-#define DEFAULT_SELECTED_BORDER_COLOR UIColorFromRGB(255,255,255,255)
+#define DEFAULT_SELECTED_BORDER_COLOR UIColorFromRGB(100,210,250,255)
 
-#define DEFAULT_BORDER_WIDTH 2.0;
+#define DEFAULT_BORDER_WIDTH 2.0
+#define DEFAULT_CORNER_RADIUS 12
 #define DEFAULT_FONT [UIFont fontWithName:@"Helvetica-Bold" size:14]
 
 #define ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT 10.0;
@@ -28,7 +29,11 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) {        
+    if (self) {
+        self.layer.masksToBounds = YES;
+        self.layer.cornerRadius = DEFAULT_CORNER_RADIUS;
+        self.layer.borderWidth = DEFAULT_BORDER_WIDTH;
+        
         _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
         _textLabel.font = DEFAULT_FONT;
         
@@ -45,11 +50,6 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 -(void)layoutSubviews
 {
     self.textLabel.frame = CGRectMake(_textLabelPadding, self.bounds.origin.y, self.bounds.size.width-2*_textLabelPadding, self.bounds.size.height);
-    self.layer.masksToBounds = YES;
-    self.layer.cornerRadius = self.bounds.size.height/2;
-    self.layer.borderWidth = DEFAULT_BORDER_WIDTH;
-    self.layer.borderColor = [_unselectedBorderColor CGColor];
-    
     [super layoutSubviews];
 }
 
@@ -80,7 +80,6 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 
 - (void)initializeDefaultColors
 {
-    self.backgroundColor = DEFAULT_BG_COLOR;
     self.unselectedBGColor = DEFAULT_BG_COLOR;
     self.selectedBGColor = DEFAULT_SELECTED_BG_COLOR;
     self.unselectedTextColor = DEFAULT_TEXT_COLOR;
@@ -92,8 +91,9 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 -(void)prepareForReuse
 {
     self.textLabel.text = nil;
-    [self setHighlighted:NO animated:NO];
     [self initializeDefaultColors];
+    [self setHighlighted:NO animated:NO];
+    [super prepareForReuse];
 }
 
 @end

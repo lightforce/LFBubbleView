@@ -5,8 +5,6 @@
 #import <UIKit/UIKit.h>
 #import "LFBubbleViewCell.h"
 
-#pragma mark -  Bubble View DataSource
-
 @class LFBubbleCollectionView;
 
 #pragma mark - Bubble View Delegate
@@ -22,11 +20,10 @@
 @interface LFBubbleCollectionView : UICollectionView
 
 -(void)showMenuForBubbleItem:(LFBubbleViewCell *)item;
+@property (nonatomic, weak) IBOutlet id<LFBubbleViewDelegate> bubbleViewDelegate;
 
-@property (nonatomic, weak) IBOutlet id<LFBubbleViewDelegate> bubbleDelegate;
-
-// pointer to the currently selected bubble
-@property (nonatomic, weak) LFBubbleViewCell *activeBubble;
+//Pointer to the currently selected bubble when displaying a context menu
+@property (nonatomic, weak) LFBubbleViewCell* activeBubble;
 
 
 @end
