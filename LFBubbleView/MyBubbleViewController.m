@@ -22,6 +22,13 @@
     return self;
 }
 
+#pragma mark - 
+
+-(LFBubbleCollectionViewController*)bubbleViewController
+{
+    return self.childViewControllers.firstObject;
+}
+
 
 #pragma mark - View Lifecycle
 
@@ -31,6 +38,7 @@
     _selectedItems = [NSMutableDictionary dictionary];
     UIBarButtonItem *addItemButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItemToEndOfList)];
     self.navigationItem.leftBarButtonItem = addItemButton;
+    self.bubbleViewController.delegate = self;
 }
 
 #pragma mark - Delete / Insert Items
@@ -41,42 +49,30 @@
     NSString* label = index % 2 == 0 ? [NSString stringWithFormat:@"Another item %i", index + 1 ] : [NSString stringWithFormat:@"Item %i", index + 1];
     
     [self.bubbleTexts insertObject:label atIndex:index];
-    [self.bubbleView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
+    [self.bubbleViewController insertItemAtIndex:index];
 }
 
 -(void)deleteSelectedBubble:(id)sender
 {
-    NSIndexPath* selectedBubbleIndexPath = [self.bubbleView indexPathForCell:self.bubbleView.activeBubble];
-    [self.bubbleTexts removeObjectAtIndex:selectedBubbleIndexPath.row];
-    [self.bubbleView deleteItemsAtIndexPaths:@[selectedBubbleIndexPath]];
+    NSInteger selectedBubbleIndex = self.bubbleViewController.selectedItemIndex;
+    [self.bubbleTexts removeObjectAtIndex:selectedBubbleIndex];
+    [self.bubbleViewController deleteItemAtIndex:selectedBubbleIndex];
 }
 
 -(void)inserLeft:(id)sender
 {
-    NSIndexPath* selectedBubbleIndexPath = [self.bubbleView indexPathForCell:self.bubbleView.activeBubble];
-    [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", self.bubbleTexts.count + 1 ] atIndex:selectedBubbleIndexPath.row];
-    [self.bubbleView insertItemsAtIndexPaths:@[selectedBubbleIndexPath]];
+    NSInteger selectedBubbleIndex = self.bubbleViewController.selectedItemIndex;
+
+    [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", self.bubbleTexts.count + 1 ] atIndex:selectedBubbleIndex];
+    [self.bubbleViewController insertItemAtIndex:selectedBubbleIndex];
 }
 
 -(void)insertRight:(id)sender
 {
-    NSIndexPath* selectedBubbleIndexPath = [self.bubbleView indexPathForCell:self.bubbleView.activeBubble];
-    NSInteger index = selectedBubbleIndexPath.row+1;
+    NSInteger selectedBubbleIndex = self.bubbleViewController.selectedItemIndex;
+    NSInteger index = selectedBubbleIndex + 1;
     [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", self.bubbleTexts.count + 1 ] atIndex:index];
-    [self.bubbleView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]]];
-}
-
-#pragma mark -
-
-- (void)configureItem:(LFBubbleViewCell *)item forBubbleView:(LFBubbleCollectionView *)bubbleView atIndex:(NSInteger)index
-{
-    [super configureItem:item forBubbleView:bubbleView atIndex:index];
-    item.selectedBGColor = [UIColor colorWithRed:92/255.0 green:193/255.0 blue:0 alpha:1];
-    item.unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
-    item.selectedTextColor = [UIColor colorWithWhite:0.98 alpha:1.0];
-    item.unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    item.selectedBorderColor = item.selectedBGColor;
-    item.unselectedBorderColor = item.unselectedBGColor;
+    [self.bubbleViewController insertItemAtIndex:index];
 }
 
 #pragma mark - LFBubbleViewDelegate
@@ -99,7 +95,17 @@
     NSLog(@"Did hide menu for bubble at index %i",index);
 }
 
-#pragma mark - Overrides
+#pragma mark - LFBubbleViewControllerDelegate
+
+- (void)configureItem:(LFBubbleCollectionViewCell *)item forBubbleView:(LFBubbleCollectionView *)bubbleView atIndex:(NSInteger)index
+{
+    item.selectedBGColor = [UIColor colorWithRed:92/255.0 green:193/255.0 blue:0 alpha:1];
+    item.unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
+    item.selectedTextColor = [UIColor colorWithWhite:0.98 alpha:1.0];
+    item.unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    item.selectedBorderColor = item.selectedBGColor;
+    item.unselectedBorderColor = item.unselectedBGColor;
+}
 
 -(BOOL)bubbleView:(LFBubbleCollectionView *)bubbleView shouldShowMenuForBubbleItemAtIndex:(NSInteger)index
 {

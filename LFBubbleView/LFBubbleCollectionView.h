@@ -3,13 +3,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LFBubbleViewCell.h"
+#import "LFBubbleCollectionViewCell.h"
 
 @class LFBubbleCollectionView;
 
 #pragma mark - Bubble View Delegate
 
-@protocol LFBubbleViewDelegate <NSObject>
+@protocol LFBubbleCollectionViewDelegate <NSObject>
 
 @optional
 -(void)bubbleView:(LFBubbleCollectionView *)bubbleView didHideMenuForBubbleItemAtIndex:(NSInteger)index;
@@ -19,11 +19,12 @@
 
 @interface LFBubbleCollectionView : UICollectionView
 
--(void)showMenuForBubbleItem:(LFBubbleViewCell *)item;
-@property (nonatomic, weak) IBOutlet id<LFBubbleViewDelegate> bubbleViewDelegate;
+-(void)showMenuForBubbleItem:(LFBubbleCollectionViewCell *)item;
+
+@property (nonatomic, weak) IBOutlet id<LFBubbleCollectionViewDelegate> bubbleViewDelegate;
 
 //Pointer to the currently selected bubble when displaying a context menu
-@property (nonatomic, weak) LFBubbleViewCell* activeBubble;
+@property (nonatomic, weak) LFBubbleCollectionViewCell* bubbleThatIsShowingMenu;
 
 
 @end

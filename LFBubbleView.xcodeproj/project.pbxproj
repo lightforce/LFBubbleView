@@ -22,8 +22,8 @@
 		F38B30FE190FEA6D00DA1A7B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F38B30FC190FEA6D00DA1A7B /* InfoPlist.strings */; };
 		F38B3100190FEA6D00DA1A7B /* LFBubbleViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B30FF190FEA6D00DA1A7B /* LFBubbleViewTests.m */; };
 		F38B310F190FEACA00DA1A7B /* LFBubbleCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310A190FEACA00DA1A7B /* LFBubbleCollectionView.m */; };
-		F38B3110190FEACA00DA1A7B /* LFBubbleViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310C190FEACA00DA1A7B /* LFBubbleViewCell.m */; };
-		F38B3111190FEACA00DA1A7B /* LFBubbleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310E190FEACA00DA1A7B /* LFBubbleViewController.m */; };
+		F38B3110190FEACA00DA1A7B /* LFBubbleCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310C190FEACA00DA1A7B /* LFBubbleCollectionViewCell.m */; };
+		F38B3111190FEACA00DA1A7B /* LFBubbleCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B310E190FEACA00DA1A7B /* LFBubbleCollectionViewController.m */; };
 		F38B31141910470300DA1A7B /* MyBubbleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F38B31131910470300DA1A7B /* MyBubbleViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -59,10 +59,10 @@
 		F38B30FF190FEA6D00DA1A7B /* LFBubbleViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LFBubbleViewTests.m; sourceTree = "<group>"; };
 		F38B3109190FEACA00DA1A7B /* LFBubbleCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFBubbleCollectionView.h; sourceTree = "<group>"; };
 		F38B310A190FEACA00DA1A7B /* LFBubbleCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleCollectionView.m; sourceTree = "<group>"; };
-		F38B310B190FEACA00DA1A7B /* LFBubbleViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFBubbleViewCell.h; sourceTree = "<group>"; };
-		F38B310C190FEACA00DA1A7B /* LFBubbleViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleViewCell.m; sourceTree = "<group>"; };
-		F38B310D190FEACA00DA1A7B /* LFBubbleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFBubbleViewController.h; sourceTree = "<group>"; };
-		F38B310E190FEACA00DA1A7B /* LFBubbleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleViewController.m; sourceTree = "<group>"; };
+		F38B310B190FEACA00DA1A7B /* LFBubbleCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFBubbleCollectionViewCell.h; sourceTree = "<group>"; };
+		F38B310C190FEACA00DA1A7B /* LFBubbleCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleCollectionViewCell.m; sourceTree = "<group>"; };
+		F38B310D190FEACA00DA1A7B /* LFBubbleCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFBubbleCollectionViewController.h; sourceTree = "<group>"; };
+		F38B310E190FEACA00DA1A7B /* LFBubbleCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LFBubbleCollectionViewController.m; sourceTree = "<group>"; };
 		F38B31121910470300DA1A7B /* MyBubbleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBubbleViewController.h; sourceTree = "<group>"; };
 		F38B31131910470300DA1A7B /* MyBubbleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBubbleViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -129,10 +129,10 @@
 			children = (
 				F38B3109190FEACA00DA1A7B /* LFBubbleCollectionView.h */,
 				F38B310A190FEACA00DA1A7B /* LFBubbleCollectionView.m */,
-				F38B310B190FEACA00DA1A7B /* LFBubbleViewCell.h */,
-				F38B310C190FEACA00DA1A7B /* LFBubbleViewCell.m */,
-				F38B310D190FEACA00DA1A7B /* LFBubbleViewController.h */,
-				F38B310E190FEACA00DA1A7B /* LFBubbleViewController.m */,
+				F38B310B190FEACA00DA1A7B /* LFBubbleCollectionViewCell.h */,
+				F38B310C190FEACA00DA1A7B /* LFBubbleCollectionViewCell.m */,
+				F38B310D190FEACA00DA1A7B /* LFBubbleCollectionViewController.h */,
+				F38B310E190FEACA00DA1A7B /* LFBubbleCollectionViewController.m */,
 				F38B30E3190FEA6D00DA1A7B /* LFAppDelegate.h */,
 				F38B30E4190FEA6D00DA1A7B /* LFAppDelegate.m */,
 				F38B30E6190FEA6D00DA1A7B /* Main.storyboard */,
@@ -307,10 +307,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F38B31141910470300DA1A7B /* MyBubbleViewController.m in Sources */,
-				F38B3111190FEACA00DA1A7B /* LFBubbleViewController.m in Sources */,
+				F38B3111190FEACA00DA1A7B /* LFBubbleCollectionViewController.m in Sources */,
 				F38B30E5190FEA6D00DA1A7B /* LFAppDelegate.m in Sources */,
 				F38B310F190FEACA00DA1A7B /* LFBubbleCollectionView.m in Sources */,
-				F38B3110190FEACA00DA1A7B /* LFBubbleViewCell.m in Sources */,
+				F38B3110190FEACA00DA1A7B /* LFBubbleCollectionViewCell.m in Sources */,
 				F38B30E1190FEA6D00DA1A7B /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,24 +12,58 @@
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS" customClass="LFBubbleCollectionView">
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gep-wh-oWl">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="x1Z-DK-PE0" kind="embed" id="bEA-CI-8GY"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="bubbleViewDelegate" destination="vXZ-lx-hvc" id="KX7-Wc-p5H"/>
-                            <outlet property="dataSource" destination="vXZ-lx-hvc" id="mAX-Lu-meF"/>
-                            <outlet property="delegate" destination="vXZ-lx-hvc" id="Fyh-Pv-db9"/>
-                        </connections>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Gep-wh-oWl" secondAttribute="trailing" id="LGg-1w-DNt"/>
+                            <constraint firstItem="Gep-wh-oWl" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="daJ-A1-st7"/>
+                            <constraint firstItem="Gep-wh-oWl" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="mZq-jS-ex3"/>
+                            <constraint firstAttribute="bottom" secondItem="Gep-wh-oWl" secondAttribute="bottom" id="u48-zi-IOX"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="6aO-j8-IUc"/>
-                    <connections>
-                        <outlet property="bubbleView" destination="kh9-bI-dsS" id="cCi-ni-BQr"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="808" y="326"/>
+            <point key="canvasLocation" x="776" y="332"/>
+        </scene>
+        <!--Bubble Collection View Controller-->
+        <scene sceneID="6Jy-Uj-utE">
+            <objects>
+                <viewController id="x1Z-DK-PE0" customClass="LFBubbleCollectionViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xvw-3F-sKB"/>
+                        <viewControllerLayoutGuide type="bottom" id="HVi-RI-R9G"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6Zz-j0-K68" customClass="LFBubbleCollectionView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="1" green="0.48173912525054041" blue="0.21832367361196614" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <outlet property="bubbleViewDelegate" destination="x1Z-DK-PE0" id="yJ8-KJ-jin"/>
+                            <outlet property="dataSource" destination="x1Z-DK-PE0" id="oKb-er-BUa"/>
+                            <outlet property="delegate" destination="x1Z-DK-PE0" id="ERk-MJ-M9U"/>
+                        </connections>
+                    </view>
+                    <connections>
+                        <outlet property="bubbleView" destination="6Zz-j0-K68" id="Brg-Cg-jdP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JTG-jo-awI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1232" y="332"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="S2s-1i-WmN">

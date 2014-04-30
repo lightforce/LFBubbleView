@@ -2,7 +2,7 @@
 //  Copyright (c) 2014 Sebastian Hunkeler. All rights reserved.
 //
 
-#import "LFBubbleViewCell.h"
+#import "LFBubbleCollectionViewCell.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define DEFAULT_BG_COLOR UIColorFromRGB(0,140,180,255)
@@ -14,15 +14,15 @@
 
 #define DEFAULT_BORDER_WIDTH 2.0
 #define DEFAULT_CORNER_RADIUS 12
+#define DEFAULT_ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT 10.0;
 #define DEFAULT_FONT [UIFont fontWithName:@"Helvetica-Bold" size:14]
-
-#define ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT 10.0;
+#define HIGHLIGHT_ANIMATION_DURATION 0.2
 
 static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, NSInteger alpha) {
     return [UIColor colorWithRed:((float)red)/255.0 green:((float)green)/255.0 blue:((float)blue)/255.0 alpha:((float)alpha)/255.0];
 }
 
-@implementation LFBubbleViewCell
+@implementation LFBubbleCollectionViewCell
 
 #pragma mark - initialization
 
@@ -36,9 +36,9 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
         
         _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
         _textLabel.font = DEFAULT_FONT;
+        _textLabel.backgroundColor = [UIColor clearColor];
         
-        self.textLabel.backgroundColor = [UIColor clearColor];        
-        self.textLabelPadding = ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT;
+        _textLabelPadding = DEFAULT_ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT;
         [self initializeDefaultColors];
         [self addSubview:_textLabel];
     }
@@ -49,7 +49,7 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 
 -(void)layoutSubviews
 {
-    self.textLabel.frame = CGRectMake(_textLabelPadding, self.bounds.origin.y, self.bounds.size.width-2*_textLabelPadding, self.bounds.size.height);
+    self.textLabel.frame = CGRectMake(self.textLabelPadding, self.bounds.origin.y, self.bounds.size.width - 2 * self.textLabelPadding , self.bounds.size.height);
     [super layoutSubviews];
 }
 
@@ -69,7 +69,7 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 -(void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     if (animated) {
-        [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
+        [UIView animateWithDuration:HIGHLIGHT_ANIMATION_DURATION delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             [self setColors:highlighted];
         } completion:nil];
     } else {
@@ -90,10 +90,10 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 
 -(void)prepareForReuse
 {
+    [super prepareForReuse];
     self.textLabel.text = nil;
     [self initializeDefaultColors];
     [self setHighlighted:NO animated:NO];
-    [super prepareForReuse];
 }
 
 @end

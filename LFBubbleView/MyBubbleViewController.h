@@ -6,11 +6,12 @@
 //  Copyright (c) 2014 codeninja. All rights reserved.
 //
 
-#import "LFBubbleViewController.h"
+#import "LFBubbleCollectionViewController.h"
 
-@interface MyBubbleViewController : LFBubbleViewController
+@interface MyBubbleViewController : UIViewController<LFBubbleCollectionViewControllerDelegate>
 
 @property (nonatomic,strong) NSMutableArray* bubbleTexts;
 @property (nonatomic,strong) UIFont* bubbleItemsFont;
+@property (nonatomic,readonly) LFBubbleCollectionViewController* bubbleViewController;
 
 @end

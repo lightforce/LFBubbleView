@@ -4,9 +4,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class LFBubbleViewCell;
-
-@interface LFBubbleViewCell : UICollectionViewCell
+@interface LFBubbleCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, readonly) UILabel *textLabel;
 
