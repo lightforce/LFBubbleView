@@ -7,6 +7,6 @@ Pod::Spec.new do |s|
   s.summary      = 'A bubble view for iOS based on UICollectionView'
   s.platform     = :ios, '7.0'
   s.source       = { :git => 'https://github.com/lightforce/LFBubbleView.git', :tag => '1.0.0' }
-  s.source_files = 'LFBubbleView/LFBubbleCollectionViewCell.{h,m}', 'LFBubbleCollectionView.{h,m}', 'LFBubbleCollectionViewController.{h,m}', 'Pods/NHAlignmentFlowLayout/NHAlignmentFlowLayout/NHAlignmentFlowLayout.{h,m}'
+  s.source_files = 'LFBubbleView/LFBubbleCollectionViewCell.{h,m}', 'LFBubbleView/LFBubbleCollectionView.{h,m}', 'LFBubbleView/LFBubbleCollectionViewController.{h,m}', 'Pods/NHAlignmentFlowLayout/NHAlignmentFlowLayout/NHAlignmentFlowLayout.{h,m}'
   s.requires_arc = true
 end
