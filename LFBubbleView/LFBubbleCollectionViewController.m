@@ -74,8 +74,8 @@
     BOOL highlighted = !bubbleCell.isHighlighted;
     [bubbleCell setHighlighted:highlighted animated:YES];
     
-    if(highlighted && [self bubbleView:bubbleCollectionView shouldShowMenuForBubbleItemAtIndex:indexPath.item]){
-        [self.bubbleView showMenuForBubbleItem:bubbleCell];
+    if([self bubbleView:bubbleCollectionView shouldShowMenuForBubbleItemAtIndex:indexPath.item]){
+        if(highlighted) [self.bubbleView showMenuForBubbleItem:bubbleCell];
         return;
     }
     
