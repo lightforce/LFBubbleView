@@ -20,15 +20,36 @@
 
 #pragma mark - Initialization
 
--(id)initWithCoder:(NSCoder *)aDecoder
+- (void)configureView
+{
+    [self configureLayout];
+    [self setShowsHorizontalScrollIndicator:NO];
+    [self setShowsVerticalScrollIndicator:NO];
+    self.bounces = YES;
+}
+
+- (instancetype)init
+{
+    return [self initWithFrame:CGRectZero collectionViewLayout:nil];
+}
+
+-(instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout
+{
+    NHAlignmentFlowLayout* flowLayout = [[NHAlignmentFlowLayout alloc] init];
+    
+    self = [super initWithFrame:frame collectionViewLayout:flowLayout];
+    if(self){
+        [self configureView];
+    }
+    return self;
+}
+
+-(instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    
     if (self) {
-        [self configureLayout];
-        [self setShowsHorizontalScrollIndicator:NO];
-        [self setShowsVerticalScrollIndicator:NO];
-        self.bounces = YES;
+        self.collectionViewLayout = [[NHAlignmentFlowLayout alloc] init];
+        [self configureView];
     }    
     return  self;
 }
@@ -43,9 +64,8 @@
 
 - (void)configureLayout
 {
-    NHAlignmentFlowLayout* flowLayout = [[NHAlignmentFlowLayout alloc] init];
+    NHAlignmentFlowLayout* flowLayout = (NHAlignmentFlowLayout*) self.collectionViewLayout;
     flowLayout.alignment = NHAlignmentTopLeftAligned;
-    //UICollectionViewFlowLayout* flowLayout = [[UICollectionViewFlowLayout alloc] init];
     flowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
     flowLayout.itemSize = DEFAULT_ITEM_SIZE;
     self.collectionViewLayout = flowLayout;
@@ -59,8 +79,8 @@
     
     NSArray *menuItems = nil;
     
-    if ([_bubbleViewDelegate respondsToSelector:@selector(bubbleView:menuItemsForBubbleItemAtIndex:)])
-        menuItems = [_bubbleViewDelegate bubbleView:self menuItemsForBubbleItemAtIndex:[self indexPathForCell:item].row];
+    if ([_bubbleViewMenuDelegate respondsToSelector:@selector(bubbleView:menuItemsForBubbleItemAtIndex:)])
+        menuItems = [_bubbleViewMenuDelegate bubbleView:self menuItemsForBubbleItemAtIndex:[self indexPathForCell:item].row];
     
     if (menuItems)
         [self showMenuCalloutWthItems:menuItems forBubbleItem:item];
@@ -88,8 +108,8 @@
         [_bubbleThatIsShowingMenu setHighlighted:NO animated:YES];
         [self deregisterNotificationObservers];
         
-        if ([_bubbleViewDelegate respondsToSelector:@selector(bubbleView:didHideMenuForBubbleItemAtIndex:)])
-            [_bubbleViewDelegate bubbleView:self didHideMenuForBubbleItemAtIndex:[self indexPathForCell:_bubbleThatIsShowingMenu].row];
+        if ([_bubbleViewMenuDelegate respondsToSelector:@selector(bubbleView:didHideMenuForBubbleItemAtIndex:)])
+            [_bubbleViewMenuDelegate bubbleView:self didHideMenuForBubbleItemAtIndex:[self indexPathForCell:_bubbleThatIsShowingMenu].row];
         
         _bubbleThatIsShowingMenu = nil;
     }];

@@ -28,7 +28,6 @@
 
 @interface LFBubbleCollectionViewController : UIViewController <LFBubbleCollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
-@property (nonatomic,weak) IBOutlet LFBubbleCollectionView *bubbleView;
 @property (nonatomic,weak) IBOutlet id<LFBubbleCollectionViewControllerDelegate> delegate;
 @property (nonatomic,readonly) NSInteger selectedItemIndex;
 

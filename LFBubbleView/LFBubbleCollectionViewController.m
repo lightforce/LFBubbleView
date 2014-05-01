@@ -12,12 +12,19 @@
 
 #define REUSE_CELL_IDENTIFIER @"BubbleCell"
 
+@interface LFBubbleCollectionViewController ()
+@property (nonatomic,readonly) LFBubbleCollectionView *bubbleView;
+@end
+
 @implementation LFBubbleCollectionViewController
 
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    NSAssert([self.view isKindOfClass:[LFBubbleCollectionView class]], @"View Controller's view is not instance of class LFBubbleCollectionView");
     NSAssert(self.bubbleView != nil, @"No bubbleView outlet is set.");
+    NSAssert(self.bubbleView.dataSource == self, @"LFBubbleCollectionViewController instance is not configured as dataSource");
+    NSAssert(self.bubbleView.delegate == self, @"LFBubbleCollectionViewController instance is not configured as delegate");
     [self.bubbleView registerClass:[LFBubbleCollectionViewCell class] forCellWithReuseIdentifier:REUSE_CELL_IDENTIFIER];
 }
 
@@ -92,7 +99,12 @@
     return UIEdgeInsetsMake(0, 0, 0, 0);
 }
 
-#pragma mark - Controller Actions
+#pragma mark - Controller Actions / Properties
+
+-(LFBubbleCollectionView *)bubbleView
+{
+    return (LFBubbleCollectionView*) self.view;
+}
 
 -(void)insertItemAtIndex:(NSInteger)index
 {

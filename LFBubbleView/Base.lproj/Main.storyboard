@@ -50,16 +50,13 @@
                     <view key="view" contentMode="scaleToFill" id="6Zz-j0-K68" customClass="LFBubbleCollectionView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.7622992931" green="0.91815392200000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
-                            <outlet property="bubbleViewDelegate" destination="x1Z-DK-PE0" id="yJ8-KJ-jin"/>
-                            <outlet property="dataSource" destination="x1Z-DK-PE0" id="oKb-er-BUa"/>
-                            <outlet property="delegate" destination="x1Z-DK-PE0" id="ERk-MJ-M9U"/>
+                            <outlet property="bubbleViewMenuDelegate" destination="x1Z-DK-PE0" id="Vjx-Xp-FwD"/>
+                            <outlet property="dataSource" destination="x1Z-DK-PE0" id="4MN-hB-pll"/>
+                            <outlet property="delegate" destination="x1Z-DK-PE0" id="7nr-fG-t9B"/>
                         </connections>
                     </view>
-                    <connections>
-                        <outlet property="bubbleView" destination="6Zz-j0-K68" id="Brg-Cg-jdP"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JTG-jo-awI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -21,7 +21,7 @@
 
 -(void)showMenuForBubbleItem:(LFBubbleCollectionViewCell *)item;
 
-@property (nonatomic, weak) IBOutlet id<LFBubbleCollectionViewDelegate> bubbleViewDelegate;
+@property (nonatomic, weak) IBOutlet id<LFBubbleCollectionViewDelegate> bubbleViewMenuDelegate;
 
 //Pointer to the currently selected bubble when displaying a context menu
 @property (nonatomic, weak) LFBubbleCollectionViewCell* bubbleThatIsShowingMenu;
