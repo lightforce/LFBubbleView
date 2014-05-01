@@ -9,8 +9,6 @@
 #define DEFAULT_SELECTED_BG_COLOR UIColorFromRGB(0,160,200,255)
 #define DEFAULT_TEXT_COLOR UIColorFromRGB(255,255,255,255)
 #define DEFAULT_SELECTED_TEXT_COLOR UIColorFromRGB(255,255,255,255)
-#define DEFAULT_BORDER_COLOR UIColorFromRGB(0,140,180,255)
-#define DEFAULT_SELECTED_BORDER_COLOR UIColorFromRGB(100,210,250,255)
 
 #define DEFAULT_BORDER_WIDTH 2.0
 #define DEFAULT_CORNER_RADIUS 12
@@ -32,7 +30,6 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
     if (self) {
         self.layer.masksToBounds = YES;
         self.layer.cornerRadius = DEFAULT_CORNER_RADIUS;
-        self.layer.borderWidth = DEFAULT_BORDER_WIDTH;
         
         _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
         _textLabel.font = DEFAULT_FONT;
@@ -84,8 +81,8 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
     self.selectedBGColor = DEFAULT_SELECTED_BG_COLOR;
     self.unselectedTextColor = DEFAULT_TEXT_COLOR;
     self.selectedTextColor = DEFAULT_SELECTED_TEXT_COLOR;
-    self.unselectedBorderColor = DEFAULT_BORDER_COLOR;
-    self.selectedBorderColor = DEFAULT_SELECTED_BORDER_COLOR;
+    self.unselectedBorderColor = nil;
+    self.selectedBorderColor = nil;
 }
 
 -(void)prepareForReuse
@@ -94,6 +91,22 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
     self.textLabel.text = nil;
     [self initializeDefaultColors];
     [self setHighlighted:NO animated:NO];
+}
+
+#pragma mark - Properties
+
+-(void)setSelectedBorderColor:(UIColor *)selectedBorderColor
+{
+    if(_selectedBorderColor == selectedBorderColor) return;
+    _selectedBorderColor = selectedBorderColor;
+    self.layer.borderWidth = selectedBorderColor == nil ? 0 : DEFAULT_BORDER_WIDTH;
+}
+
+-(void)setUnselectedBorderColor:(UIColor *)unselectedBorderColor
+{
+    if(_unselectedBorderColor == unselectedBorderColor) return;
+    _unselectedBorderColor = unselectedBorderColor;
+    self.layer.borderWidth = unselectedBorderColor == nil ? 0 : DEFAULT_BORDER_WIDTH;
 }
 
 @end

@@ -103,8 +103,6 @@
     item.unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
     item.selectedTextColor = [UIColor colorWithWhite:0.98 alpha:1.0];
     item.unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    item.selectedBorderColor = item.selectedBGColor;
-    item.unselectedBorderColor = item.unselectedBGColor;
 }
 
 -(BOOL)bubbleView:(LFBubbleCollectionView *)bubbleView shouldShowMenuForBubbleItemAtIndex:(NSInteger)index

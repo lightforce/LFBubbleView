@@ -18,6 +18,11 @@
 
 @implementation LFBubbleCollectionViewController
 
+-(void)setView:(UIView*)aView{
+    [super setView:aView];
+    [(UICollectionView*)aView registerClass:[LFBubbleCollectionViewCell class] forCellWithReuseIdentifier:REUSE_CELL_IDENTIFIER];
+}
+
 -(void)viewDidLoad
 {
     [super viewDidLoad];
@@ -25,7 +30,6 @@
     NSAssert(self.bubbleView != nil, @"No bubbleView outlet is set.");
     NSAssert(self.bubbleView.dataSource == self, @"LFBubbleCollectionViewController instance is not configured as dataSource");
     NSAssert(self.bubbleView.delegate == self, @"LFBubbleCollectionViewController instance is not configured as delegate");
-    [self.bubbleView registerClass:[LFBubbleCollectionViewCell class] forCellWithReuseIdentifier:REUSE_CELL_IDENTIFIER];
 }
 
 -(BOOL)canBecomeFirstResponder
