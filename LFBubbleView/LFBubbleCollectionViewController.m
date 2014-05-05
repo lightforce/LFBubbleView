@@ -12,11 +12,25 @@
 
 #define REUSE_CELL_IDENTIFIER @"BubbleCell"
 
+static UIFont* defaultBubbleLabelFont;
+
 @interface LFBubbleCollectionViewController ()
 @property (nonatomic,readonly) LFBubbleCollectionView *bubbleView;
 @end
 
+
 @implementation LFBubbleCollectionViewController
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        static dispatch_once_t once;
+        dispatch_once(&once, ^ { defaultBubbleLabelFont = [UIFont fontWithName:@"Avenir-Light" size:13.0]; });
+    }
+    return self;
+}
+
 
 -(void)setView:(UIView*)aView{
     [super setView:aView];
@@ -210,7 +224,7 @@
     if([self.delegate respondsToSelector:@selector(bubbleView:fontForItemAtIndex:)])
         return [self.delegate bubbleView:bubbleView fontForItemAtIndex:index];
     
-    return DEFAULT_FONT;
+    return defaultBubbleLabelFont;
 }
 
 -(NSUInteger)numberOfBubbleItemsInBubbleView:(LFBubbleCollectionView *)bubbleView

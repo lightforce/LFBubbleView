@@ -10,8 +10,6 @@
 
 @property (nonatomic, strong) UIColor *unselectedBGColor;
 @property (nonatomic, strong) UIColor *selectedBGColor;
-@property (nonatomic, strong) UIColor *unselectedBorderColor;
-@property (nonatomic, strong) UIColor *selectedBorderColor;
 @property (nonatomic, strong) UIColor *unselectedTextColor;
 @property (nonatomic, strong) UIColor *selectedTextColor;
 

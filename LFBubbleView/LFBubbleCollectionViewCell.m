@@ -10,15 +10,18 @@
 #define DEFAULT_TEXT_COLOR UIColorFromRGB(255,255,255,255)
 #define DEFAULT_SELECTED_TEXT_COLOR UIColorFromRGB(255,255,255,255)
 
-#define DEFAULT_BORDER_WIDTH 2.0
 #define DEFAULT_CORNER_RADIUS 12
 #define DEFAULT_ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT 10.0;
-#define DEFAULT_FONT [UIFont fontWithName:@"Helvetica-Bold" size:14]
 #define HIGHLIGHT_ANIMATION_DURATION 0.2
 
 static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, NSInteger alpha) {
     return [UIColor colorWithRed:((float)red)/255.0 green:((float)green)/255.0 blue:((float)blue)/255.0 alpha:((float)alpha)/255.0];
 }
+
+static UIColor* defaultBackgroundColor;
+static UIColor* defaultSelectedBackgroundColor;
+static UIColor* defaultTextColor;
+static UIColor* defaultSelectedTextColor;
 
 @implementation LFBubbleCollectionViewCell
 
@@ -28,15 +31,24 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.layer.masksToBounds = YES;
+
+        static dispatch_once_t once;
+        dispatch_once(&once, ^ {
+            defaultBackgroundColor = DEFAULT_BG_COLOR;
+            defaultSelectedBackgroundColor = DEFAULT_SELECTED_BG_COLOR;
+            defaultSelectedTextColor = DEFAULT_SELECTED_TEXT_COLOR;
+            defaultTextColor = DEFAULT_TEXT_COLOR;
+        });
+        
         self.layer.cornerRadius = DEFAULT_CORNER_RADIUS;
+        self.layer.rasterizationScale = [UIScreen mainScreen].scale;
+        self.layer.shouldRasterize = YES;
         
         _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
-        _textLabel.font = DEFAULT_FONT;
         _textLabel.backgroundColor = [UIColor clearColor];
         
         _textLabelPadding = DEFAULT_ITEM_TEXTLABELPADDING_LEFT_AND_RIGHT;
-        [self initializeDefaultColors];
+        [self applyDefaultColors];
         [self addSubview:_textLabel];
     }
     return self;
@@ -46,20 +58,23 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
 
 -(void)layoutSubviews
 {
-    self.textLabel.frame = CGRectMake(self.textLabelPadding, self.bounds.origin.y, self.bounds.size.width - 2 * self.textLabelPadding , self.bounds.size.height);
     [super layoutSubviews];
+    CGRect targetLabelFrame = _textLabel.frame;
+    targetLabelFrame.origin.x = _textLabelPadding;
+    targetLabelFrame.origin.y = self.bounds.origin.y;
+    targetLabelFrame.size.width = self.bounds.size.width - 2 * _textLabelPadding;
+    targetLabelFrame.size.height = self.bounds.size.height;
+    _textLabel.frame = targetLabelFrame;
 }
 
 - (void)setColors:(BOOL)isHighlighted
 {
     if(isHighlighted) {
-        self.backgroundColor = _selectedBGColor;
-        self.textLabel.textColor = _selectedTextColor;
-        self.layer.borderColor = _selectedBorderColor.CGColor;
+        self.layer.backgroundColor = _selectedBGColor.CGColor;
+        _textLabel.textColor = _selectedTextColor;
     } else {
-        self.backgroundColor = _unselectedBGColor;
-        self.textLabel.textColor = _unselectedTextColor;
-        self.layer.borderColor = _unselectedBorderColor.CGColor;
+        self.layer.backgroundColor = _unselectedBGColor.CGColor;
+        _textLabel.textColor = _unselectedTextColor;
     }
 }
 
@@ -75,38 +90,20 @@ static UIColor* UIColorFromRGB(NSInteger red, NSInteger green, NSInteger blue, N
     _isHighlighted = highlighted;
 }
 
-- (void)initializeDefaultColors
+- (void)applyDefaultColors
 {
-    self.unselectedBGColor = DEFAULT_BG_COLOR;
-    self.selectedBGColor = DEFAULT_SELECTED_BG_COLOR;
-    self.unselectedTextColor = DEFAULT_TEXT_COLOR;
-    self.selectedTextColor = DEFAULT_SELECTED_TEXT_COLOR;
-    self.unselectedBorderColor = nil;
-    self.selectedBorderColor = nil;
+    _unselectedBGColor = defaultBackgroundColor;
+    _selectedBGColor = defaultSelectedBackgroundColor;
+    _unselectedTextColor = defaultTextColor;
+    _selectedTextColor = defaultSelectedTextColor;
 }
 
 -(void)prepareForReuse
 {
     [super prepareForReuse];
-    self.textLabel.text = nil;
-    [self initializeDefaultColors];
+    _textLabel.text = nil;
+    [self applyDefaultColors];
     [self setHighlighted:NO animated:NO];
-}
-
-#pragma mark - Properties
-
--(void)setSelectedBorderColor:(UIColor *)selectedBorderColor
-{
-    if(_selectedBorderColor == selectedBorderColor) return;
-    _selectedBorderColor = selectedBorderColor;
-    self.layer.borderWidth = selectedBorderColor == nil ? 0 : DEFAULT_BORDER_WIDTH;
-}
-
--(void)setUnselectedBorderColor:(UIColor *)unselectedBorderColor
-{
-    if(_unselectedBorderColor == unselectedBorderColor) return;
-    _unselectedBorderColor = unselectedBorderColor;
-    self.layer.borderWidth = unselectedBorderColor == nil ? 0 : DEFAULT_BORDER_WIDTH;
 }
 
 @end

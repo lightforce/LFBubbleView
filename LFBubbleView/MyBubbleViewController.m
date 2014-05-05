@@ -11,6 +11,10 @@
 @implementation MyBubbleViewController
 {
     NSMutableDictionary* _selectedItems;
+    UIColor* _selectedBGColor;
+    UIColor* _unselectedBGColor;
+    UIColor* _selectedTextColor;
+    UIColor* _unselectedTextColor;
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -18,6 +22,11 @@
     if(self = [super initWithCoder:aDecoder]){
         _bubbleItemsFont = [UIFont fontWithName:@"Avenir-Light" size:13.0];
         _bubbleTexts = [[NSMutableArray alloc] init];
+        
+        _selectedBGColor = [UIColor colorWithRed:92/255.0 green:193/255.0 blue:0 alpha:1];
+        _unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
+        _selectedTextColor = [UIColor colorWithWhite:0.98 alpha:1.0];
+        _unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
     }
     return self;
 }
@@ -35,6 +44,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    ((LFBubbleCollectionView*)self.bubbleViewController.view).showsVerticalScrollIndicator = YES;
+    
+    for (unsigned long i=0; i<150; ++i) {
+        if(i%2==0)
+            [self.bubbleTexts addObject:[NSString stringWithFormat:@"An item %ld",i]];
+        else
+            [self.bubbleTexts addObject:[NSString stringWithFormat:@"A different item %ld",i]];
+    }
+    
     _selectedItems = [NSMutableDictionary dictionary];
     UIBarButtonItem *addItemButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItemToEndOfList)];
     self.navigationItem.leftBarButtonItem = addItemButton;
@@ -46,7 +64,7 @@
 -(void)addItemToEndOfList
 {
     NSInteger index = [self.bubbleTexts count];
-    NSString* label = index % 2 == 0 ? [NSString stringWithFormat:@"Another item %i", index + 1 ] : [NSString stringWithFormat:@"Item %i", index + 1];
+    NSString* label = index % 2 == 0 ? [NSString stringWithFormat:@"Another item %ld", (long) index + 1 ] : [NSString stringWithFormat:@"Item %ld", (long) index + 1];
     
     [self.bubbleTexts insertObject:label atIndex:index];
     [self.bubbleViewController insertItemAtIndex:index];
@@ -63,7 +81,7 @@
 {
     NSInteger selectedBubbleIndex = self.bubbleViewController.selectedItemIndex;
 
-    [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", self.bubbleTexts.count + 1 ] atIndex:selectedBubbleIndex];
+    [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %ld", (long) self.bubbleTexts.count + 1 ] atIndex:selectedBubbleIndex];
     [self.bubbleViewController insertItemAtIndex:selectedBubbleIndex];
 }
 
@@ -71,7 +89,7 @@
 {
     NSInteger selectedBubbleIndex = self.bubbleViewController.selectedItemIndex;
     NSInteger index = selectedBubbleIndex + 1;
-    [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %i", self.bubbleTexts.count + 1 ] atIndex:index];
+    [self.bubbleTexts insertObject:[NSString stringWithFormat:@"Item %ld", (long) self.bubbleTexts.count + 1 ] atIndex:index];
     [self.bubbleViewController insertItemAtIndex:index];
 }
 
@@ -92,17 +110,17 @@
 
 -(void)bubbleView:(LFBubbleCollectionView *)bubbleView didHideMenuForBubbleItemAtIndex:(NSInteger)index
 {
-    NSLog(@"Did hide menu for bubble at index %i",index);
+    NSLog(@"Did hide menu for bubble at index %ld",(long)index);
 }
 
 #pragma mark - LFBubbleViewControllerDelegate
 
 - (void)configureItem:(LFBubbleCollectionViewCell *)item forBubbleView:(LFBubbleCollectionView *)bubbleView atIndex:(NSInteger)index
 {
-    item.selectedBGColor = [UIColor colorWithRed:92/255.0 green:193/255.0 blue:0 alpha:1];
-    item.unselectedBGColor = [UIColor colorWithWhite:0.93 alpha:1.0];
-    item.selectedTextColor = [UIColor colorWithWhite:0.98 alpha:1.0];
-    item.unselectedTextColor = [UIColor colorWithWhite:0.1 alpha:1.0];
+    item.selectedBGColor = _selectedBGColor;
+    item.unselectedBGColor = _unselectedBGColor;
+    item.selectedTextColor = _selectedTextColor;
+    item.unselectedTextColor = _unselectedTextColor;
 }
 
 -(BOOL)bubbleView:(LFBubbleCollectionView *)bubbleView shouldShowMenuForBubbleItemAtIndex:(NSInteger)index
@@ -112,13 +130,13 @@
 
 -(void)bubbleView:(LFBubbleCollectionView *)aBubbleView didSelectBubbleItemAtIndex:(NSInteger)index
 {
-    NSLog(@"selected bubble at index %d", index);
+    NSLog(@"selected bubble at index %ld", (long)index);
     _selectedItems[[self bubbleView:aBubbleView textForItemAtIndex:index]] = @YES;
 }
 
 -(void)bubbleView:(LFBubbleCollectionView *)bubbleView didDeselectBubbleItemAtIndex:(NSInteger)index
 {
-    NSLog(@"deselected bubble at index %d", index);
+    NSLog(@"deselected bubble at index %ld", (long)index);
     [_selectedItems removeObjectForKey:[self bubbleView:bubbleView textForItemAtIndex:index]];
 }
 
