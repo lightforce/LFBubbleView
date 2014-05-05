@@ -21,12 +21,22 @@ static UIFont* defaultBubbleLabelFont;
 
 @implementation LFBubbleCollectionViewController
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        static dispatch_once_t once;
+        dispatch_once(&once, ^ { defaultBubbleLabelFont = DEFAULT_FONT; });
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
         static dispatch_once_t once;
-        dispatch_once(&once, ^ { defaultBubbleLabelFont = [UIFont fontWithName:@"Avenir-Light" size:13.0]; });
+        dispatch_once(&once, ^ { defaultBubbleLabelFont = DEFAULT_FONT; });
     }
     return self;
 }
