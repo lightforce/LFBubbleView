@@ -129,6 +129,11 @@ static UIFont* defaultBubbleLabelFont;
 
 #pragma mark - Controller Actions / Properties
 
+-(CGSize)bubbleViewSize
+{
+    return self.bubbleView.collectionViewLayout.collectionViewContentSize;
+}
+
 -(LFBubbleCollectionView *)bubbleView
 {
     return (LFBubbleCollectionView*) self.view;
@@ -155,7 +160,7 @@ static UIFont* defaultBubbleLabelFont;
 {
     if([self.delegate respondsToSelector:@selector(bubbleView:menuItemsForBubbleItemAtIndex:)])
         return [self.delegate bubbleView:bubbleView menuItemsForBubbleItemAtIndex:index];
-        
+    
     return nil;
 }
 

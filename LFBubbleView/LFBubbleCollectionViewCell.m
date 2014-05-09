@@ -31,7 +31,7 @@ static UIColor* defaultSelectedTextColor;
 {
     self = [super initWithFrame:frame];
     if (self) {
-
+        
         static dispatch_once_t once;
         dispatch_once(&once, ^ {
             defaultBackgroundColor = DEFAULT_BG_COLOR;
@@ -41,8 +41,6 @@ static UIColor* defaultSelectedTextColor;
         });
         
         self.layer.cornerRadius = DEFAULT_CORNER_RADIUS;
-        self.layer.rasterizationScale = [UIScreen mainScreen].scale;
-        self.layer.shouldRasterize = YES;
         
         _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
         _textLabel.backgroundColor = [UIColor clearColor];

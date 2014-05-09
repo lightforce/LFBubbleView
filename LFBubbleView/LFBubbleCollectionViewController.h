@@ -30,6 +30,7 @@
 
 @property (nonatomic,weak) IBOutlet id<LFBubbleCollectionViewControllerDelegate> delegate;
 @property (nonatomic,readonly) NSInteger selectedItemIndex;
+@property (nonatomic,readonly) CGSize bubbleViewSize;
 
 -(void)insertItemAtIndex:(NSInteger)index;
 -(void)deleteItemAtIndex:(NSInteger)index;

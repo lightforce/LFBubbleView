@@ -50,11 +50,11 @@
     if (self) {
         self.collectionViewLayout = [[NHAlignmentFlowLayout alloc] init];
         [self configureView];
-    }    
+    }
     return  self;
 }
 
-#pragma mark - 
+#pragma mark -
 
 - (void)deregisterNotificationObservers
 {
@@ -100,7 +100,7 @@
     menuController.menuItems = menuItems;
     
     _willShowMenuNotificationObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIMenuControllerWillShowMenuNotification object:menuController queue:nil usingBlock:^(NSNotification *note) {
-         self.userInteractionEnabled = NO;
+        self.userInteractionEnabled = NO;
     }];
     
     _didHideMenuObserver = [[NSNotificationCenter defaultCenter] addObserverForName:UIMenuControllerDidHideMenuNotification object:menuController queue:nil usingBlock:^(NSNotification *note) {
